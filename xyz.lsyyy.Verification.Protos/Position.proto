@@ -1,0 +1,5 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "xyz.lsyyy.Verification.Protos";
+
+package xyz.lsyyy.Verification.Protos;

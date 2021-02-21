@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Action.proto" />
+    <None Remove="Department.proto" />
+    <None Remove="Position.proto" />
+    <None Remove="User.proto" />
+    <None Remove="Verification.proto" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Grpc.AspNetCore" Version="2.35.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Protobuf Include="Action.proto" />
+    <Protobuf Include="Department.proto" />
+    <Protobuf Include="Position.proto" />
+    <Protobuf Include="User.proto" GrpcServices="Both" />
+    <Protobuf Include="Verification.proto" />
+  </ItemGroup>
+
+</Project>

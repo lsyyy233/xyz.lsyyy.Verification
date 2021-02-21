@@ -1,0 +1,18 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "xyz.lsyyy.Verification.Protos";
+
+package xyz.lsyyy.Verification.Protos;
+
+message VerificationResult{
+	bool Access = 1;
+}
+
+message VerificationModel{
+	string UserId = 1;
+	string TagName = 2;
+}
+
+service Verification{
+	rpc GetAccess(VerificationModel) returns(VerificationResult);
+}

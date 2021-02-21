@@ -1,0 +1,17 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "xyz.lsyyy.Verification.Protos";
+
+package xyz.lsyyy.Verification.Protos;
+
+message AddDepartmentResult{
+	bool Success = 1;
+}
+
+message AddDepartmentModel{
+	string DepartmentName = 1;
+}
+
+service Department{
+	rpc AddDepartment(AddDepartmentModel) returns (AddDepartmentResult);
+}

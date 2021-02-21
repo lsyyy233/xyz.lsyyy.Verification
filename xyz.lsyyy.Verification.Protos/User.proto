@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+option csharp_namespace = "xyz.lsyyy.Verification.Protos";
+
+package xyz.lsyyy.Verification.Protos;
+
+message RegistUserModel {
+	string Name = 1;
+	string DepartmentId = 2;
+	string PositionId = 3;
+}
+
+message UserId{
+	string Id = 1;
+}
+
+message RegistUserResult{
+	bool Success = 1;
+}
+
+message UsreModel{
+	string Id = 1;
+	string Name = 2;
+	string PositionId = 3;
+}
+
+
+
+service User{
+	rpc RegistUser(RegistUserModel) returns (RegistUserResult);
+	rpc GetUser(UserId) returns (UsreModel);
+}
