@@ -10,6 +10,7 @@ message AddDepartmentResult{
 
 message AddDepartmentModel{
 	string DepartmentName = 1;
+	string SuperiorDepartmentId = 2;
 }
 
 service Department{

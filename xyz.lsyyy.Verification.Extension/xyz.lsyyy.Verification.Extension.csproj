@@ -1,17 +1,19 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Version>0.0.8</Version>
+    <Authors>lsyyy</Authors>
+    <Company>lsyyy</Company>
+    <Product />
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Grpc.AspNetCore" Version="2.35.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.1.12" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\xyz.lsyyy.Verification.protos\xyz.lsyyy.Verification.protos.csproj" />
+    <PackageReference Include="xyz.lsyyy.Verification.Protos" Version="0.0.8" />
   </ItemGroup>
 
 </Project>

@@ -1,7 +1,7 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
 
-namespace xyz.lsyyy.Verification.Util.CertUtil
+namespace xyz.lsyyy.Verification.Extension.Util
 {
 	public static class MD5Helper
 	{
