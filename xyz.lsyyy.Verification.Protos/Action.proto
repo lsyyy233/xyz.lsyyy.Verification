@@ -3,3 +3,17 @@
 option csharp_namespace = "xyz.lsyyy.Verification.Protos";
 
 package xyz.lsyyy.Verification.Protos;
+
+message ActionRequest{
+	string Tag = 1;
+	string ControllerName = 2;
+	string ActionName = 3;
+}
+
+message ActionResponse{
+	bool Status = 1;
+}
+
+service ActionService{
+	rpc PushActions(stream ActionRequest) returns (ActionResponse);
+}

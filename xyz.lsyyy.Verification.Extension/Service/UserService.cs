@@ -5,7 +5,7 @@ namespace xyz.lsyyy.Verification.Extension.Service
 {
 	public class UserService
 	{
-		private readonly Protos.User.UserClient userClient;
+		private readonly User.UserClient userClient;
 		public UserService(User.UserClient userClient)
 		{
 			this.userClient = userClient;

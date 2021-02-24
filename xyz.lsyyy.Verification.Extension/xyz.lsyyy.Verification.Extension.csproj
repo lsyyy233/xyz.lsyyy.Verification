@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>0.0.8</Version>
+    <Version>0.1.9</Version>
     <Authors>lsyyy</Authors>
     <Company>lsyyy</Company>
     <Product />
@@ -13,7 +13,7 @@
     <PackageReference Include="Grpc.AspNetCore" Version="2.35.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.1.12" />
-    <PackageReference Include="xyz.lsyyy.Verification.Protos" Version="0.0.8" />
+    <PackageReference Include="xyz.lsyyy.Verification.Protos" Version="0.1.3" />
   </ItemGroup>
 
 </Project>

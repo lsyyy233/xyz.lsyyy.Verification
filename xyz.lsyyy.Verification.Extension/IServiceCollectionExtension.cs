@@ -17,6 +17,7 @@ namespace xyz.lsyyy.Verification.Extension
 			services.AddGrpcClient<Protos.User.UserClient>(grpcOptionAction);
 			services.AddGrpcClient<Protos.Verification.VerificationClient>(grpcOptionAction);
 			services.AddGrpcClient<Protos.User.UserClient>(grpcOptionAction);
+			services.AddGrpcClient<Protos.ActionService.ActionServiceClient>(grpcOptionAction);
 		}
 	}
 }

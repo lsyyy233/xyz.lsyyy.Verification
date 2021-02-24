@@ -1,17 +1,26 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using System;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace xyz.lsyyy.Verification.Extension
 {
 	public static class IApplicationBuilderExtension
 	{
-		public static void UseVerificationMiddleware(this IApplicationBuilder app, Func<HttpContext, IServiceProvider, string> getUserIdFunc = null)
+		public static void UseVerificationMiddleware(this IApplicationBuilder app, 
+			Func<HttpContext, IServiceProvider, string> getUserIdFunc = null,
+			string pushTagRoute = "/PushTag")
 		{
-			if (getUserIdFunc == null)
+			app.UseEndpoints(endpoints =>
 			{
-				throw new ArgumentNullException("Argument optionAction can not be null");
-			}
+				endpoints.MapPost(pushTagRoute, async context =>
+				{
+					AuthorizationTagService authorizationTagService =
+						context.RequestServices.GetService<AuthorizationTagService>();
+					authorizationTagService.PushActionMap();
+					await context.Response.WriteAsync("success");
+				});
+			});
 			app.UseMiddleware<AuthorityFilterMiddleware>(getUserIdFunc);
 		}
 	}
