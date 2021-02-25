@@ -44,6 +44,9 @@ namespace xyz.lsyyy.Verification.Extension
 					});
 		}
 
+		/// <summary>
+		/// 推送Tag到服务端
+		/// </summary>
 		public void PushActionMap()
 		{
 			Task.Run(async () =>
@@ -66,6 +69,12 @@ namespace xyz.lsyyy.Verification.Extension
 			});
 		}
 
+		/// <summary>
+		/// 查询将要访问Action是否有Tag
+		/// </summary>
+		/// <param name="controllerName"></param>
+		/// <param name="actionName"></param>
+		/// <returns></returns>
 		public bool ActionHasTag(string controllerName, string actionName)
 		{
 			if (map.Any(x => x.ActionName.Equals(actionName) && x.ControllerName == controllerName))
@@ -75,6 +84,12 @@ namespace xyz.lsyyy.Verification.Extension
 			return false;
 		}
 
+		/// <summary>
+		/// 获取访问的Action的Tag
+		/// </summary>
+		/// <param name="controllerName"></param>
+		/// <param name="actionName"></param>
+		/// <returns></returns>
 		public string GetTagName(string controllerName, string actionName)
 		{
 			return map

@@ -36,7 +36,7 @@ namespace xyz.lsyyy.Verification.Extension
 			}
 			string userId = getUserIdFunc(context, serviceProvider);
 			//id不为空时，再判断是否需要认证
-
+			log.LogInformation($"userId={userId}");
 			if (!(string.IsNullOrWhiteSpace(userId) || string.IsNullOrWhiteSpace(userId)))
 			{
 				if (verificationService.AllowAccess(controllerName, actionName, userId))
