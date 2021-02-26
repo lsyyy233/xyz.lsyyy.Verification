@@ -13,15 +13,20 @@ namespace xyz.lsyyy.Verification.Extension
 		private readonly ILogger<AuthorityFilterMiddleware> log;
 		private readonly RequestDelegate _next;
 		private readonly Func<HttpContext, IServiceProvider, string> getUserIdFunc;
-		public AuthorityFilterMiddleware(RequestDelegate next, ILoggerFactory loggerFactory, Func<HttpContext, IServiceProvider, string> getUserIdFunc)
+
+		public AuthorityFilterMiddleware(
+			RequestDelegate next, 
+			ILoggerFactory loggerFactory,
+			AuthorizationTagService authorizationTagService,
+			Func<HttpContext, IServiceProvider, string> getUserIdFunc)
 		{
 			_next = next;
 			this.getUserIdFunc = getUserIdFunc;
 			log = loggerFactory.CreateLogger<AuthorityFilterMiddleware>();
+			authorizationTagService.PushActionMap();
 		}
 		public Task Invoke(
 			HttpContext context,
-			UserService userService,
 			AuthorizationTagService authorizationTagService,
 			VerificationService verificationService,
 			IServiceProvider serviceProvider)
