@@ -2,17 +2,30 @@
 
 option csharp_namespace = "xyz.lsyyy.Verification.Protos";
 
+import "General.proto";
+
 package xyz.lsyyy.Verification.Protos;
 
-message AddDepartmentResult{
-	bool Success = 1;
-}
-
-message AddDepartmentModel{
+message AddDepartmentRequest{
 	string DepartmentName = 1;
 	string SuperiorDepartmentId = 2;
 }
 
-service Department{
-	rpc AddDepartment(AddDepartmentModel) returns (AddDepartmentResult);
+message GetDepartmentResponse{
+	string DepartmentId = 1;
+	string DepartmentName = 2;
+	string SuperiorDepartmentId = 3;
+}
+
+message UpdateDepartmentRequest{
+	string DepartmentId = 1;
+	string DepartmentName = 2;
+	string SuperiorDepartmentId = 3;
+}
+
+service DepartmentRpcService{
+	rpc AddDepartment(AddDepartmentRequest) returns (GeneralResponse);
+	rpc DeleteDepartment(GeneralIdRequest) returns (GeneralResponse);
+	rpc GetDepartment(GeneralIdRequest) returns(GetDepartmentResponse);
+	rpc UpdateDepartment(UpdateDepartmentRequest) returns(GeneralResponse);
 }

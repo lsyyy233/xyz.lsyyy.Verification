@@ -4,29 +4,34 @@ namespace xyz.lsyyy.Verification.Extension.Service
 {
 	public class VerificationService
 	{
-		private readonly Protos.Verification.VerificationClient verificationClient;
+		private readonly VerificationRpcService.VerificationRpcServiceClient verificationClient;
 		private readonly AuthorizationTagService tagService;
+		private readonly UserService userService;
 
-		public VerificationService(Protos.Verification.VerificationClient verificationClient, AuthorizationTagService tagService)
+		public VerificationService(
+			VerificationRpcService.VerificationRpcServiceClient verificationClient,
+			AuthorizationTagService tagService, UserService userService)
 		{
 			this.verificationClient = verificationClient;
 			this.tagService = tagService;
+			this.userService = userService;
 		}
-		
+
 
 		/// <summary>
 		/// 是否允许访问
 		/// </summary>
-		/// <param name="context"></param>
-		/// <param name="GetUserIdFunc"></param>
+		/// <param name="controllerName"></param>
+		/// <param name="actionName"></param>
 		/// <returns></returns>
-		public bool AllowAccess(string controllerName, string actionName, string UserId)
+		public bool AllowAccess(string controllerName, string actionName)
 		{
-			string tagName = tagService.GetTagName(controllerName,actionName);
+			string userId = userService.UserId.ToString();
+			string tagName = tagService.GetTagName(controllerName, actionName);
 			VerificationModel verification = new VerificationModel
 			{
 				TagName = tagName,
-				UserId = UserId,
+				UserId = userId,
 			};
 			return verificationClient.GetAccess(verification).Access;
 		}

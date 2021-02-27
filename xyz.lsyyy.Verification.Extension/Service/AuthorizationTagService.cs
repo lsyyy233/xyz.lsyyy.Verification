@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Google.Protobuf.Collections;
 using Grpc.Core;
 using Microsoft.Extensions.Logging;
 using xyz.lsyyy.Verification.Protos;
@@ -12,7 +13,7 @@ namespace xyz.lsyyy.Verification.Extension
 {
 	public class AuthorizationTagService
 	{
-		private readonly ActionService.ActionServiceClient actionService;
+		private readonly ActionRpcService.ActionRpcServiceClient actionRpcService;
 		public readonly IEnumerable<ActionTagMap> map;
 		private readonly ILogger<AuthorizationTagService> log;
 
@@ -20,11 +21,11 @@ namespace xyz.lsyyy.Verification.Extension
 		//获取所有带AuthorizationTagAttribute的action，将controllerName和actionName以及tag信息添加到集合中
 		public AuthorizationTagService(
 			IActionDescriptorCollectionProvider actionProvider,
-			ActionService.ActionServiceClient actionService,
+			ActionRpcService.ActionRpcServiceClient actionRpcService,
 			ILoggerFactory loggerFactory)
 		{
 			log = loggerFactory.CreateLogger<AuthorizationTagService>();
-			this.actionService = actionService;
+			this.actionRpcService = actionRpcService;
 			map = actionProvider.ActionDescriptors.Items.Cast<ControllerActionDescriptor>()
 				.Where(x =>
 					x.MethodInfo.CustomAttributes
@@ -51,21 +52,20 @@ namespace xyz.lsyyy.Verification.Extension
 		{
 			Task.Run(async () =>
 			{
-				using AsyncClientStreamingCall<ActionRequest, ActionResponse> call = actionService.PushActions();
-				IClientStreamWriter<ActionRequest> stream = call.RequestStream;
+				using AsyncClientStreamingCall<TagInfo, PushActionResponse> call = actionRpcService.PushActionTag();
+				IClientStreamWriter<TagInfo> stream = call.RequestStream;
 				foreach (ActionTagMap m in map)
 				{
-					await stream.WriteAsync(new ActionRequest
+					await stream.WriteAsync(new TagInfo
 					{
 						ActionName = m.ActionName,
 						ControllerName = m.ControllerName,
-						Tag = m.Tag
+						TagName = m.Tag
 					});
 				}
 				await stream.CompleteAsync();
-				ActionResponse response = await call.ResponseAsync;
+				PushActionResponse response = await call.ResponseAsync;
 				log.LogTrace($"Action Server status : {response.Status}");
-
 			});
 		}
 

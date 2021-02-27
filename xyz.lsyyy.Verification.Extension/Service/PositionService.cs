@@ -1,4 +1,4 @@
-﻿namespace xyz.lsyyy.Verification.Extension.Service
+﻿namespace xyz.lsyyy.Verification.Extension
 {
 	public class PositionService
 	{

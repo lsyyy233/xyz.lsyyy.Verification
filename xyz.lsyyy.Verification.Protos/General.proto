@@ -1,0 +1,14 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "xyz.lsyyy.Verification.Protos";
+
+package xyz.lsyyy.Verification.Protos;
+
+message GeneralResponse{
+	bool IsSuccess = 1;
+	string Message = 2;
+}
+
+message GeneralIdRequest{
+	string Id = 1;
+}

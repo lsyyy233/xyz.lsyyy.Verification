@@ -2,4 +2,33 @@
 
 option csharp_namespace = "xyz.lsyyy.Verification.Protos";
 
+import "General.proto";
+
 package xyz.lsyyy.Verification.Protos;
+
+message AddPositionRequest {
+	string PositionName = 1;
+	string SuperiorPositionId = 2;
+	string DepartmentId = 3;
+}
+
+message GetPositionResponse{
+	string PositionId = 1;
+	string PositionName = 2;
+	string SuperiorPositionId = 3;
+	string DepartmentId = 4;
+}
+
+message UpdatePositionRequest{
+	string PositionId = 1;
+	string PositionName = 2;
+	string SuperiorPositionId = 3;
+	string DepartmentId = 4;
+}
+
+service PositionRpcService{
+	rpc AddPosition (AddPositionRequest) returns (GeneralResponse);
+	rpc DeletePosition(GeneralIdRequest) returns (GeneralResponse);
+	rpc GetPosition(GeneralIdRequest) returns(GetPositionResponse);
+	rpc UpdatePosition(UpdatePositionRequest) returns (GeneralResponse);
+}

@@ -13,6 +13,6 @@ message VerificationModel{
 	string TagName = 2;
 }
 
-service Verification{
+service VerificationRpcService{
 	rpc GetAccess(VerificationModel) returns(VerificationResult);
 }

@@ -2,6 +2,8 @@ syntax = "proto3";
 
 option csharp_namespace = "xyz.lsyyy.Verification.Protos";
 
+import "General.proto";
+
 package xyz.lsyyy.Verification.Protos;
 
 message LoginRequest{
@@ -15,38 +17,44 @@ message RegistUserRequest {
 	string Password = 3;
 }
 
-message GetUserRequest{
-	string Id = 1;
-}
-
-message UserResponse{
+message GetUserResponse{
 	string Id = 1;
 	string Name = 2;
 	string PositionId = 3;
 }
 
-message DeleteUserRequest{
+message UpdateUserRequest{
 	string Id = 1;
+	string Name = 2;
+	string PositionId = 3;
 }
 
-message DeleteUserResponse{
-	bool Success = 1;
+message RegistAdminUserRequest{
+	string CurrentUserId = 1;
+	string UserName = 2;
+	string Password = 3;
 }
 
-message RegistUserResponse{
-	bool Success = 1;
-	string Message = 2;
-	UserResponse UserResponse = 3;
+message UserLoginRequest{
+	string UserName = 1;
+	string Password = 2;
 }
 
-message LoginResponse{
-	bool Success = 1;
-	UserResponse UserResponse = 2;
+message UserLoginResponse{
+	bool IsSuccess = 1;
+	UserInfo UserInfo = 2;
+}
+message UserInfo{
+	string Id = 1;
+	string Name = 2;
+	string PositionId = 3;
 }
 
-service User{
-	rpc RegistUser(RegistUserRequest) returns (RegistUserResponse);
-	rpc GetUser(GetUserRequest) returns (UserResponse);
-	rpc DeleteUser(DeleteUserRequest) returns (DeleteUserResponse);
-	rpc UserLogin (LoginRequest) returns (LoginResponse);
+service UserRpcService{
+	rpc UserLogin(UserLoginRequest)returns (UserLoginResponse);
+	rpc RegistUser(RegistUserRequest) returns (GeneralResponse);
+	rpc GetUser(GeneralIdRequest) returns (GetUserResponse);
+	rpc DeleteUser(GeneralIdRequest) returns (GeneralResponse);
+	rpc UpdateUser(UpdateUserRequest) returns(GeneralResponse);
+	rpc RegistAdminUser(RegistAdminUserRequest) returns (GeneralResponse);
 }

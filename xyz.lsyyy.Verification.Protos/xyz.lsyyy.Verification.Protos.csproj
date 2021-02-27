@@ -4,13 +4,14 @@
     <OutputType>Library</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>0.1.3</Version>
+    <Version>0.3.1</Version>
     <Authors>lsyyy</Authors>
   </PropertyGroup>
 
   <ItemGroup>
     <None Remove="Action.proto" />
     <None Remove="Department.proto" />
+    <None Remove="General.proto" />
     <None Remove="Position.proto" />
     <None Remove="User.proto" />
     <None Remove="Verification.proto" />
@@ -23,6 +24,7 @@
   <ItemGroup>
     <Protobuf Include="Action.proto" />
     <Protobuf Include="Department.proto" />
+    <Protobuf Include="General.proto" />
     <Protobuf Include="Position.proto" />
     <Protobuf Include="User.proto" GrpcServices="Both" />
     <Protobuf Include="Verification.proto" />

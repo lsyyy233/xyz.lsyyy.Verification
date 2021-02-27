@@ -1,8 +1,9 @@
 ﻿using System;
+using xyz.lsyyy.Verification.Util;
 
 namespace xyz.lsyyy.Verification.Extension
 {
-	public class UserAddModel
+	public class UserRegistModel
 	{
 		/// <summary>
 		/// 用户名
@@ -12,11 +13,17 @@ namespace xyz.lsyyy.Verification.Extension
 		/// <summary>
 		/// 所属职位Id
 		/// </summary>
-		public Guid PositionId { get; set; }
+		public Guid? PositionId { get; set; }
 
 		/// <summary>
 		/// 密码
 		/// </summary>
-		public string Password { get; set; }
+		public string Password
+		{
+			get => _password; 
+			set => _password = HashHelper.GetSha256WithSalt(value);
+		}
+
+		private string _password;
 	}
 }
