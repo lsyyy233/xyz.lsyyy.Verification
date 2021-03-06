@@ -10,5 +10,5 @@ message GeneralResponse{
 }
 
 message GeneralIdRequest{
-	string Id = 1;
+	int32 Id = 1;
 }

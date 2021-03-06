@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using xyz.lsyyy.Verification.Extension.Service;
+using xyz.lsyyy.Verification.Protos;
 
 namespace xyz.lsyyy.Verification.Extension
 {
@@ -14,10 +15,13 @@ namespace xyz.lsyyy.Verification.Extension
 			services.AddScoped<UserService>();
 			services.AddScoped<DepartmentService>();
 			services.AddScoped<PositionService>();
-			services.AddGrpcClient<Protos.UserRpcService.UserRpcServiceClient>(grpcOptionAction);
-			services.AddGrpcClient<Protos.VerificationRpcService.VerificationRpcServiceClient>(grpcOptionAction);
-			services.AddGrpcClient<Protos.UserRpcService.UserRpcServiceClient>(grpcOptionAction);
-			services.AddGrpcClient<Protos.ActionRpcService.ActionRpcServiceClient>(grpcOptionAction);
+			services.AddScoped<ActionTagService>();
+			services.AddGrpcClient<UserRpcService.UserRpcServiceClient>(grpcOptionAction);
+			services.AddGrpcClient<VerificationRpcService.VerificationRpcServiceClient>(grpcOptionAction);
+			services.AddGrpcClient<UserRpcService.UserRpcServiceClient>(grpcOptionAction);
+			services.AddGrpcClient<ActionRpcService.ActionRpcServiceClient>(grpcOptionAction);
+			services.AddGrpcClient<DepartmentRpcService.DepartmentRpcServiceClient>(grpcOptionAction);
+			services.AddGrpcClient<PositionRpcService.PositionRpcServiceClient>(grpcOptionAction);
 		}
 	}
 }

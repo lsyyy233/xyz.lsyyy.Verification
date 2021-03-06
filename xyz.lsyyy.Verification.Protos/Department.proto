@@ -3,24 +3,35 @@
 option csharp_namespace = "xyz.lsyyy.Verification.Protos";
 
 import "General.proto";
+import "google/protobuf/wrappers.proto";
 
 package xyz.lsyyy.Verification.Protos;
 
 message AddDepartmentRequest{
 	string DepartmentName = 1;
-	string SuperiorDepartmentId = 2;
+	google.protobuf.Int32Value SuperiorDepartmentId = 2;
 }
 
 message GetDepartmentResponse{
-	string DepartmentId = 1;
+	int32 DepartmentId = 1;
 	string DepartmentName = 2;
-	string SuperiorDepartmentId = 3;
+	google.protobuf.Int32Value SuperiorDepartmentId = 3;
 }
 
 message UpdateDepartmentRequest{
-	string DepartmentId = 1;
+	int32 DepartmentId = 1;
 	string DepartmentName = 2;
-	string SuperiorDepartmentId = 3;
+	google.protobuf.Int32Value SuperiorDepartmentId = 3;
+}
+
+message DepartmentAddActionRequest{
+	int32 DepartmentId = 1;
+	int32 ActionTagId = 2;
+}
+
+message DepartmentDeleteActionTagRequest{
+	int32 DepartmentId = 1;
+	int32 ActionTagId = 2;
 }
 
 service DepartmentRpcService{
@@ -28,4 +39,6 @@ service DepartmentRpcService{
 	rpc DeleteDepartment(GeneralIdRequest) returns (GeneralResponse);
 	rpc GetDepartment(GeneralIdRequest) returns(GetDepartmentResponse);
 	rpc UpdateDepartment(UpdateDepartmentRequest) returns(GeneralResponse);
+	rpc AddActionTag(DepartmentAddActionRequest) returns(GeneralResponse);
+	rpc DepartmentDeleteActionTag(DepartmentDeleteActionTagRequest)returns(GeneralResponse);
 }

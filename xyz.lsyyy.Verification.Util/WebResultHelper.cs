@@ -1,13 +1,20 @@
-﻿namespace xyz.lsyyy.Verification.Util
+﻿using Newtonsoft.Json;
+
+namespace xyz.lsyyy.Verification.Util
 {
 	public static class WebResultHelper
 	{
-		public static object MessageResult(string Message)
+		public static string JsonResult(object obj)
 		{
-			return new
+			return JsonConvert.SerializeObject(obj);
+		}
+
+		public static string JsonMessageResult(string Message)
+		{
+			return JsonConvert.SerializeObject(new
 			{
 				Message
-			};
+			});
 		}
 	}
 }

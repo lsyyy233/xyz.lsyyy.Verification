@@ -3,27 +3,38 @@
 option csharp_namespace = "xyz.lsyyy.Verification.Protos";
 
 import "General.proto";
+import "google/protobuf/wrappers.proto";
 
 package xyz.lsyyy.Verification.Protos;
 
 message AddPositionRequest {
 	string PositionName = 1;
-	string SuperiorPositionId = 2;
-	string DepartmentId = 3;
+	google.protobuf.Int32Value SuperiorPositionId = 2;
+	int32 DepartmentId = 3;
 }
 
 message GetPositionResponse{
-	string PositionId = 1;
+	int32 PositionId = 1;
 	string PositionName = 2;
-	string SuperiorPositionId = 3;
-	string DepartmentId = 4;
+	google.protobuf.Int32Value SuperiorPositionId = 3;
+	int32 DepartmentId = 4;
 }
 
 message UpdatePositionRequest{
-	string PositionId = 1;
+	int32 PositionId = 1;
 	string PositionName = 2;
-	string SuperiorPositionId = 3;
-	string DepartmentId = 4;
+	google.protobuf.Int32Value SuperiorPositionId = 3;
+	int32 DepartmentId = 4;
+}
+
+message PositionAddActionRequest{
+	int32 PositionId = 1;
+	int32 ActionTagId = 2;
+}
+
+message PositionDeleteActionTagRequest{
+	int32 PositionId = 1;
+	int32 ActionTagId = 2;
 }
 
 service PositionRpcService{
@@ -31,4 +42,6 @@ service PositionRpcService{
 	rpc DeletePosition(GeneralIdRequest) returns (GeneralResponse);
 	rpc GetPosition(GeneralIdRequest) returns(GetPositionResponse);
 	rpc UpdatePosition(UpdatePositionRequest) returns (GeneralResponse);
+	rpc AddActionTag(PositionAddActionRequest) returns(GeneralResponse);
+	rpc PositionDeleteActionTag(PositionDeleteActionTagRequest)returns(GeneralResponse);
 }

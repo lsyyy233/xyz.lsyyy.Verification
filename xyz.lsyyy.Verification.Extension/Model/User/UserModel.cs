@@ -7,7 +7,7 @@ namespace xyz.lsyyy.Verification.Extension
 		/// <summary>
 		/// 用户Id
 		/// </summary>
-		public Guid UserId { get; set; }
+		public int UserId { get; set; }
 
 		/// <summary>
 		/// 应户名
@@ -17,6 +17,6 @@ namespace xyz.lsyyy.Verification.Extension
 		/// <summary>
 		/// 职位Id
 		/// </summary>
-		public Guid? PositionId { get; set; }
+		public int? PositionId { get; set; }
 	}
 }

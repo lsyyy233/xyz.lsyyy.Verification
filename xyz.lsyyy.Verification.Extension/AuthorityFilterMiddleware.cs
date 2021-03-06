@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 using System;
 using System.Threading.Tasks;
 using xyz.lsyyy.Verification.Extension.Service;
+using xyz.lsyyy.Verification.Util;
 
 namespace xyz.lsyyy.Verification.Extension
 {
@@ -12,18 +12,16 @@ namespace xyz.lsyyy.Verification.Extension
 	{
 		private readonly ILogger<AuthorityFilterMiddleware> log;
 		private readonly RequestDelegate _next;
-		private readonly Func<HttpContext, IServiceProvider, string> getUserIdFunc;
+		private readonly Func<HttpContext, IServiceProvider, string> getTokenFunc;
 
 		public AuthorityFilterMiddleware(
 			RequestDelegate next,
 			ILoggerFactory loggerFactory,
-			AuthorizationTagService authorizationTagService,
-			Func<HttpContext, IServiceProvider, string> getUserIdFunc)
+			Func<HttpContext, IServiceProvider, string> getTokenFunc)
 		{
 			_next = next;
-			this.getUserIdFunc = getUserIdFunc;
+			this.getTokenFunc = getTokenFunc;
 			log = loggerFactory.CreateLogger<AuthorityFilterMiddleware>();
-			authorizationTagService.PushActionMap();
 		}
 		public Task Invoke(
 			HttpContext context,
@@ -32,11 +30,12 @@ namespace xyz.lsyyy.Verification.Extension
 			UserService userService,
 			IServiceProvider serviceProvider)
 		{
+			string result;
 			string controllerName = (string)context.GetRouteValue("controller");
 			string actionName = (string)context.GetRouteValue("action");
 			//查询用户信息
-			string userId = getUserIdFunc(context, serviceProvider);
-			userService.SetUserId(userId);
+			string token = getTokenFunc(context, serviceProvider);
+			userService.SetToken(token);
 			//Task.Run(async () =>
 			//{
 			//	await userService.GetUserInfoAsync();
@@ -48,18 +47,18 @@ namespace xyz.lsyyy.Verification.Extension
 				return _next(context);
 			}
 			//id不为空时，再判断是否需要认证
-			log.LogInformation($"userId={userId}");
-			if (!string.IsNullOrWhiteSpace(userId))
+			if (!string.IsNullOrWhiteSpace(token))
 			{
 				if (verificationService.AllowAccess(controllerName, actionName))
 				{
 					return _next(context);
 				}
+				result = WebResultHelper.JsonMessageResult("没有访问权限");
 			}
-			string result = JsonConvert.SerializeObject(new
+			else
 			{
-				Message = "没有访问权限"
-			});
+				result = WebResultHelper.JsonMessageResult("请先登录");
+			}
 			context.Response.StatusCode = 401;
 			context.Response.ContentType = "application/json";
 			context.Response.WriteAsync(result);

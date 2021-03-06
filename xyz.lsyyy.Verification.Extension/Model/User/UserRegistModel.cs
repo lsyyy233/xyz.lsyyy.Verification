@@ -13,7 +13,7 @@ namespace xyz.lsyyy.Verification.Extension
 		/// <summary>
 		/// 所属职位Id
 		/// </summary>
-		public Guid? PositionId { get; set; }
+		public int PositionId { get; set; }
 
 		/// <summary>
 		/// 密码

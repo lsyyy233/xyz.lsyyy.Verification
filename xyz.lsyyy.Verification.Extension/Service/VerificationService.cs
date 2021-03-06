@@ -26,12 +26,12 @@ namespace xyz.lsyyy.Verification.Extension.Service
 		/// <returns></returns>
 		public bool AllowAccess(string controllerName, string actionName)
 		{
-			string userId = userService.UserId.ToString();
+			string token = userService.Token;
 			string tagName = tagService.GetTagName(controllerName, actionName);
 			VerificationModel verification = new VerificationModel
 			{
+				Token = token,
 				TagName = tagName,
-				UserId = userId,
 			};
 			return verificationClient.GetAccess(verification).Access;
 		}

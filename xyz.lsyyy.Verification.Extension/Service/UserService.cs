@@ -1,16 +1,18 @@
-﻿using System;
+﻿using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
 using xyz.lsyyy.Verification.Protos;
+using static System.String;
 
 namespace xyz.lsyyy.Verification.Extension.Service
 {
 	public class UserService
 	{
 		private readonly UserRpcService.UserRpcServiceClient userClient;
+
 		private readonly ILogger<UserService> log;
+
 		private UserModel User;
-		public Guid UserId { get; private set; } = Guid.Empty;
+		public string Token { get; private set; } = Empty;
 
 		public UserService(UserRpcService.UserRpcServiceClient userClient, ILoggerFactory loggerFactory)
 		{
@@ -21,20 +23,18 @@ namespace xyz.lsyyy.Verification.Extension.Service
 		/// <summary>
 		/// 设置用户Id
 		/// </summary>
-		/// <param name="UserIdStr"></param>
-		internal void SetUserId(string UserIdStr)
+		/// <param name="Id"></param>
+		internal void SetToken(string token)
 		{
-			if (UserId == Guid.Empty)
+			if (IsNullOrWhiteSpace(Token))
 			{
-				Guid.TryParse(UserIdStr, out Guid userId);
-				UserId = userId;
+				Token = token;
 			}
 		}
 
 		/// <summary>
 		/// 注册用户
 		/// </summary>
-		/// <typeparam name="T"></typeparam>
 		/// <param name="model"></param>
 		/// <returns></returns>
 		public async Task<GeneralResponse> RegistUserAsync(UserRegistModel model)
@@ -43,7 +43,7 @@ namespace xyz.lsyyy.Verification.Extension.Service
 			{
 				Name = model.Name,
 				Password = model.Password,
-				PositionId = model.PositionId.ToString()
+				PositionId = model.PositionId
 			};
 			GeneralResponse result = await userClient.RegistUserAsync(user);
 			return result;
@@ -71,46 +71,47 @@ namespace xyz.lsyyy.Verification.Extension.Service
 		/// <returns></returns>
 		public async Task<GeneralResponse> RegistAdminAsync(AdminRegistModel model)
 		{
-			GeneralResponse response = await userClient.RegistAdminUserAsync(new RegistAdminUserRequest
+			RegistAdminUserRequest request = new RegistAdminUserRequest
 			{
-				CurrentUserId = UserId.ToString(),
+				CurrentUserId = null,
 				UserName = model.Name,
 				Password = model.Password
-			});
+			};
+			if (!IsNullOrWhiteSpace(Token))
+			{
+				request.CurrentUserId = (await GetCurrentUserInfoAsync()).UserId;
+			}
+			GeneralResponse response = await userClient.RegistAdminUserAsync(request);
 			return response;
 		}
 
 		/// <summary>
-		/// 从服务端查询用户信息
+		/// 从服务端查询当前登录用户信息
 		/// </summary>
 		/// <param name="userId"></param>
 		/// <returns></returns>
-		public async Task<UserModel> GetUserInfoAsync()
+		public async Task<UserModel> GetCurrentUserInfoAsync()
 		{
 			if (User != null)
 			{
 				return User;
 			}
-			GetUserResponse response = await userClient.GetUserAsync(new GeneralIdRequest
-			{
-				Id = UserId.ToString()
-			});
-			Guid.TryParse(response.Id, out Guid UserId_);
-			Guid? PositionId = null;
-			if (string.IsNullOrWhiteSpace(response.PositionId))
-			{
-				if (Guid.TryParse(response.PositionId, out Guid pId))
-				{
-					PositionId = pId;
-				}
-			}
-			User = new UserModel
-			{
-				UserId = UserId_,
-				UserName = response.Name,
-				PositionId = PositionId
-			};
+			User = await GetUserInfoAsync(Token);
 			return User;
+		}
+
+		public async Task<UserModel> GetUserInfoAsync(string Token)
+		{
+			GetUserResponse response = await userClient.GetCurrentUserAsync(new GetUserRequesr
+			{
+				Token = Token
+			});
+			return new UserModel
+			{
+				UserId = response.Id,
+				UserName = response.Name,
+				PositionId = response.PositionId
+			};
 		}
 	}
 }

@@ -6,10 +6,6 @@ import "General.proto";
 
 package xyz.lsyyy.Verification.Protos;
 
-message PushActionResponse{
-	bool Status = 1;
-}
-
 message TagInfo{
 	string TagName = 1;
 	string ControllerName = 2;
@@ -17,15 +13,25 @@ message TagInfo{
 }
 
 message UpdateTagRequest{
-	string TagId = 1;
+	int32 TagId = 1;
+	string TagName = 2;
+	string ControllerName = 3;
+	string ActionName = 4;
+}
+
+message GetAllTagRequest{
+}
+
+message GetAllTagResponse{
+	int32 TagId = 1;
 	string TagName = 2;
 	string ControllerName = 3;
 	string ActionName = 4;
 }
 
 service ActionRpcService{
-	rpc PushActionTag(stream TagInfo) returns (PushActionResponse);
 	rpc AddTag(TagInfo) returns (GeneralResponse);
 	rpc DeleteTag(GeneralIdRequest) returns (GeneralResponse);
 	rpc UpdateTag(UpdateTagRequest) returns (GeneralResponse);
+	rpc GetAllTag(GetAllTagRequest) returns(stream GetAllTagResponse);
 }

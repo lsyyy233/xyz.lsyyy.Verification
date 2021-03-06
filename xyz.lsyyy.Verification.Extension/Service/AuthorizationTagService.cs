@@ -1,12 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Google.Protobuf.Collections;
-using Grpc.Core;
-using Microsoft.Extensions.Logging;
 using xyz.lsyyy.Verification.Protos;
 
 namespace xyz.lsyyy.Verification.Extension
@@ -43,30 +40,6 @@ namespace xyz.lsyyy.Verification.Extension
 								.FirstOrDefault())
 							.FirstOrDefault().Value
 					});
-		}
-
-		/// <summary>
-		/// 推送Tag到服务端
-		/// </summary>
-		public void PushActionMap()
-		{
-			Task.Run(async () =>
-			{
-				using AsyncClientStreamingCall<TagInfo, PushActionResponse> call = actionRpcService.PushActionTag();
-				IClientStreamWriter<TagInfo> stream = call.RequestStream;
-				foreach (ActionTagMap m in map)
-				{
-					await stream.WriteAsync(new TagInfo
-					{
-						ActionName = m.ActionName,
-						ControllerName = m.ControllerName,
-						TagName = m.Tag
-					});
-				}
-				await stream.CompleteAsync();
-				PushActionResponse response = await call.ResponseAsync;
-				log.LogTrace($"Action Server status : {response.Status}");
-			});
 		}
 
 		/// <summary>

@@ -3,6 +3,7 @@ syntax = "proto3";
 option csharp_namespace = "xyz.lsyyy.Verification.Protos";
 
 import "General.proto";
+import "google/protobuf/wrappers.proto";
 
 package xyz.lsyyy.Verification.Protos;
 
@@ -13,24 +14,25 @@ message LoginRequest{
 
 message RegistUserRequest {
 	string Name = 1;
-	string PositionId = 2;
+	int32 PositionId = 2;
 	string Password = 3;
 }
 
 message GetUserResponse{
-	string Id = 1;
+	int32 Id = 1;
 	string Name = 2;
-	string PositionId = 3;
+	google.protobuf.Int32Value PositionId = 3;
+	google.protobuf.Int32Value DepartmentId = 4;
 }
 
 message UpdateUserRequest{
-	string Id = 1;
+	int32 Id = 1;
 	string Name = 2;
-	string PositionId = 3;
+	google.protobuf.Int32Value PositionId = 3;
 }
 
 message RegistAdminUserRequest{
-	string CurrentUserId = 1;
+	google.protobuf.Int32Value CurrentUserId = 1;
 	string UserName = 2;
 	string Password = 3;
 }
@@ -42,19 +44,31 @@ message UserLoginRequest{
 
 message UserLoginResponse{
 	bool IsSuccess = 1;
-	UserInfo UserInfo = 2;
+	string Token = 2;
 }
-message UserInfo{
-	string Id = 1;
-	string Name = 2;
-	string PositionId = 3;
+
+message GetUserRequesr{
+	string Token = 1;
+}
+
+message UserAddActionRequest{
+	int32 UserId = 1;
+	int32 ActionTagId = 2;
+}
+
+message UserDelateActionTagRequest{
+	int32 UserId = 1;
+	int32 ActionTagId = 2;
 }
 
 service UserRpcService{
 	rpc UserLogin(UserLoginRequest)returns (UserLoginResponse);
 	rpc RegistUser(RegistUserRequest) returns (GeneralResponse);
+	rpc GetCurrentUser(GetUserRequesr) returns (GetUserResponse);
 	rpc GetUser(GeneralIdRequest) returns (GetUserResponse);
 	rpc DeleteUser(GeneralIdRequest) returns (GeneralResponse);
 	rpc UpdateUser(UpdateUserRequest) returns(GeneralResponse);
 	rpc RegistAdminUser(RegistAdminUserRequest) returns (GeneralResponse);
+	rpc AddActionTag(UserAddActionRequest) returns(GeneralResponse);
+	rpc UserDeleteActionTag(UserDelateActionTagRequest)returns(GeneralResponse);
 }

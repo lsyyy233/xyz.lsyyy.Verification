@@ -9,7 +9,7 @@ message VerificationResult{
 }
 
 message VerificationModel{
-	string UserId = 1;
+	string Token = 1;
 	string TagName = 2;
 }
 
